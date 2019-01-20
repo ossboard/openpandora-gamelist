@@ -1,0 +1,50 @@
+buildscript {
+	ext {
+		springBootVersion = '2.1.1.RELEASE'
+	}
+	repositories {
+		mavenLocal()
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+jar {
+	manifest {
+		attributes 'Main-Class' : 'com.pandora.Application'
+	}
+	baseName = 'pandora'
+	version = '1.0'
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter')
+
+	compile group: 'org.apache.commons', name: 'commons-lang3', version:'3.1'
+	compile group: 'commons-io', name: 'commons-io', version: '2.5'
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+
+	compile('org.apache.poi:poi-ooxml:3.16') // .xlsx
+	compile('org.apache.poi:poi:3.16') // .xls
+
+	compile("org.projectlombok:lombok:1.16.16")
+	compile('javax.xml.bind:jaxb-api:2.3.0')
+	compile('javax.activation:activation:1.1')
+	compile('org.glassfish.jaxb:jaxb-runtime:2.3.0')
+
+//	jaxb 'com.sun.xml.bind:jaxb-xjc:2.1.17'
+}

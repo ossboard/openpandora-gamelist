@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<gameList>
+	<game id="40400" source="ScreenScraper">
+		<path>./advmame/buggychl.zip</path>
+		<name>Buggy Challenge</name>
+		<desc>Buggy Challenge is a chase-view driving game.</desc>
+		<image>./downloaded_images/advmame_buggychl-image.png</image>
+		<marquee>./downloaded_images/advmame_buggychl-marquee.jpg</marquee>
+		<video>./downloaded_images/advmame_buggychl-video.mp4</video>
+		<thumbnail />
+		<rating>0.5</rating>
+		<releasedate>19840101T000000</releasedate>
+		<developer>Taito</developer>
+		<publisher>Taito</publisher>
+		<genre>Race, Driving</genre>
+		<players>1</players>
+	</game>
+</gameList>
