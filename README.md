@@ -9,7 +9,7 @@ https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.
 
 ### gameList.xml  -> gameList.xls (xml 파일을 엑셀파일로 변환 ) 
 ```
-> java -jar build/libs/openpandora-gamelist.jar gameList.xml gameList.xls
+> java -jar openpandora-gamelist.jar gameList.xml gameList.xls
 ```
 
 ### 변환된 xls 파일을 엑셀을 이용해 편집
@@ -19,6 +19,6 @@ https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.
 
 ### gameList.xls -> gameList.xml (엑셀파일을 xml파일로 변환 ) 
 ```
-> java -jar build/libs/openpandora-gamelist.jar gameList.xls gameList.xml
+> java -jar openpandora-gamelist.jar gameList.xls gameList.xml
 ** 이름 덮어쓰기 주위!!
 ```
