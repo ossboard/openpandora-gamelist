@@ -1,6 +1,5 @@
 package com.pandora.spring.agent;
 
-import com.pandora.Application;
 import com.pandora.spring.model.GameList;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -8,18 +7,23 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConvertCore {
+@Component
+public class ConvertCore implements CommandLineRunner {
 
-    static public void xml2xls(String xmlFile, String xlsFile) throws Exception {
+
+    public void xml2xls(String xmlFile, String xlsFile) throws Exception {
 
         File in = new File(xmlFile);
         if(!in.exists()) {
@@ -31,9 +35,8 @@ public class ConvertCore {
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         GameList gameList = (GameList) unmarshaller.unmarshal(new StringReader(body));
 
-        URL url = Application.class.getResource("/excel.xls");
-        String XLS_TEMPLATE = url.getPath();
-        InputStream is = new FileInputStream(XLS_TEMPLATE);
+        Resource resource = new ClassPathResource("excel.xls");
+        InputStream is = resource.getInputStream();
         Workbook wb = new HSSFWorkbook(is);
         Sheet sheet =  wb.getSheetAt(0);
         int start = 1;
@@ -58,16 +61,13 @@ public class ConvertCore {
             sheet.getRow(start + i).createCell(14).setCellValue(game.getPlayers());
         }
         is.close();
-
-        File o = new File(xlsFile);
-        System.out.println(o.getAbsolutePath());
         FileOutputStream out = new FileOutputStream(xlsFile);
         wb.write(out);
         out.flush();
         out.close();
     }
 
-    static public void xls2xml(String xlsFile, String xmlFile) throws Exception {
+    public void xls2xml(String xlsFile, String xmlFile) throws Exception {
         File in = new File(xlsFile);
         if(!in.exists()) {
             throw new Exception(" File Not Found (" + xlsFile + ")");
@@ -112,4 +112,24 @@ public class ConvertCore {
         FileUtils.writeStringToFile(file, xml, "UTF-8");
     }
 
+    @Override
+    public void run(String... args) throws Exception {
+        try {
+            if( StringUtils.endsWith(args[0],"xml") && StringUtils.endsWith(args[1],"xls")) {
+                xml2xls(args[0],args[1]);
+                System.out.println(args[1] + " Convert OK");
+                // xls -> xml
+            } else if( StringUtils.endsWith(args[0],"xls") && StringUtils.endsWith(args[1],"xml")) {
+                xls2xml(args[0],args[1]);
+                System.out.println(args[1] + " Convert OK");
+            } else {
+                System.out.println("예제) gamelist.xml 파일을 out.xls 파일로 만들때");
+                System.out.println("> java -jar openpandora-gamelist.jar gamelist.xml out.xls");
+                System.out.println("예제) out.xls 파일을 gamelist2.xml 파일로 만들때");
+                System.out.println("> java -jar openpandora-gamelist.jar out.xls gamelist2.xml");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
