@@ -115,19 +115,27 @@ public class ConvertCore implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         try {
-            if( StringUtils.endsWith(args[0],"xml") && StringUtils.endsWith(args[1],"xls")) {
-                xml2xls(args[0],args[1]);
-                System.out.println(args[1] + " Convert OK");
-                // xls -> xml
-            } else if( StringUtils.endsWith(args[0],"xls") && StringUtils.endsWith(args[1],"xml")) {
-                xls2xml(args[0],args[1]);
-                System.out.println(args[1] + " Convert OK");
-            } else {
+            boolean found = false;
+            if (args.length == 2) {
+                if( StringUtils.endsWith(args[0],"xml") && StringUtils.endsWith(args[1],"xls")) {
+                    xml2xls(args[0],args[1]);
+                    System.out.println(args[1] + " Convert OK");
+                    found = true;
+                    // xls -> xml
+                } else if( StringUtils.endsWith(args[0],"xls") && StringUtils.endsWith(args[1],"xml")) {
+                    xls2xml(args[0],args[1]);
+                    System.out.println(args[1] + " Convert OK");
+                    found = true;
+                }
+            }
+
+            if(!found) {
                 System.out.println("예제) gamelist.xml 파일을 out.xls 파일로 만들때");
                 System.out.println("> java -jar openpandora-gamelist.jar gamelist.xml out.xls");
                 System.out.println("예제) out.xls 파일을 gamelist2.xml 파일로 만들때");
                 System.out.println("> java -jar openpandora-gamelist.jar out.xls gamelist2.xml");
             }
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
